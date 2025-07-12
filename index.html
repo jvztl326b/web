@@ -1,1 +1,209 @@
-@jvztl on discord
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jvztl's mafia</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background: #000;
+        }
+        
+        #nyan-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        
+        .message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: white;
+            text-shadow: 0 0 10px #ff00ff, 
+                         0 0 20px #00ffff, 
+                         0 0 30px #ffff00;
+            animation: glow 2s infinite alternate;
+        }
+        
+        h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+            background: linear-gradient(to right, #ff00ff, #00ffff, #ffff00);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .discord-handle {
+            font-size: 2em;
+            background: linear-gradient(to right, #7289da, #ffffff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 50px;
+            border: 3px solid #7289da;
+            box-shadow: 0 0 15px #7289da;
+        }
+        
+        .cat-paw {
+            font-size: 2em;
+            margin: 0 10px;
+            animation: bounce 0.5s infinite alternate;
+        }
+        
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 10px #ff00ff, 
+                             0 0 20px #00ffff, 
+                             0 0 30px #ffff00;
+            }
+            to {
+                text-shadow: 0 0 20px #ff00ff, 
+                             0 0 30px #00ffff, 
+                             0 0 40px #ffff00,
+                             0 0 50px #ff00ff;
+            }
+        }
+        
+        @keyframes bounce {
+            from {
+                transform: translateY(0) rotate(-15deg);
+            }
+            to {
+                transform: translateY(-15px) rotate(15deg);
+            }
+        }
+        
+        .floating-cats {
+            position: absolute;
+            font-size: 2em;
+            animation: float 10s infinite linear;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(0) translateX(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(50vw) rotate(360deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="nyan-container"></div>
+    
+    <div class="message">
+        <h1>I own this website!</h1>
+        <div>
+            <span class="cat-paw">🐾</span>
+            <span class="discord-handle">@jvztl on Discord</span>
+            <span class="cat-paw">🐾</span>
+        </div>
+    </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+    <script>
+        // Nyan Cat animation using p5.js
+        function setup() {
+            let canvas = createCanvas(windowWidth, windowHeight);
+            canvas.position(0, 0);
+            canvas.style('z-index', '-1');
+            noStroke();
+        }
+        
+        function draw() {
+            clear();
+            
+            // Rainbow trail
+            for (let i = 0; i < 6; i++) {
+                fill(
+                    map(sin(frameCount * 0.05 + i), -1, 1, 200, 255),
+                    map(sin(frameCount * 0.05 + i + 2), -1, 1, 200, 255),
+                    map(sin(frameCount * 0.05 + i + 4), -1, 1, 200, 255)
+                );
+                rect(
+                    (frameCount * 3 + i * 30) % (width + 200) - 100,
+                    height / 2 - 15,
+                    100,
+                    30
+                );
+            }
+            
+            // Nyan Cat body
+            fill(255);
+            ellipse((frameCount * 3) % (width + 200) - 100, height / 2, 80, 50);
+            
+            // Nyan Cat head
+            fill(255);
+            ellipse((frameCount * 3) % (width + 200) - 130, height / 2 - 5, 40, 40);
+            
+            // Nyan Cat ears
+            triangle(
+                (frameCount * 3) % (width + 200) - 145, height / 2 - 20,
+                (frameCount * 3) % (width + 200) - 135, height / 2 - 40,
+                (frameCount * 3) % (width + 200) - 125, height / 2 - 20
+            );
+            triangle(
+                (frameCount * 3) % (width + 200) - 125, height / 2 - 20,
+                (frameCount * 3) % (width + 200) - 115, height / 2 - 40,
+                (frameCount * 3) % (width + 200) - 105, height / 2 - 20
+            );
+            
+            // Nyan Cat tail
+            beginShape();
+            vertex((frameCount * 3) % (width + 200) - 60, height / 2);
+            bezierVertex(
+                (frameCount * 3) % (width + 200) - 40, height / 2 - 20,
+                (frameCount * 3) % (width + 200) - 20, height / 2 + 20,
+                (frameCount * 3) % (width + 200) - 0, height / 2
+            );
+            endShape();
+            
+            // Add floating cats occasionally
+            if (frameCount % 30 === 0) {
+                createFloatingCat();
+            }
+        }
+        
+        function createFloatingCat() {
+            const cat = document.createElement('div');
+            cat.className = 'floating-cats';
+            cat.innerHTML = '🐱';
+            cat.style.left = Math.random() * window.innerWidth + 'px';
+            cat.style.bottom = '0';
+            cat.style.animationDuration = (5 + Math.random() * 10) + 's';
+            document.body.appendChild(cat);
+            
+            // Remove cat after animation completes
+            setTimeout(() => {
+                cat.remove();
+            }, 15000);
+        }
+        
+        function windowResized() {
+            resizeCanvas(windowWidth, windowHeight);
+        }
+    </script>
+</body>
+</html>
